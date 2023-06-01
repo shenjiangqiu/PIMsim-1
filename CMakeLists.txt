@@ -14,9 +14,9 @@ endif()
 add_library(inih INTERFACE)
 target_include_directories(inih INTERFACE ext/headers)
 
-add_library(format INTERFACE)
-target_include_directories(format INTERFACE ext/fmt/include)
-target_compile_definitions(format INTERFACE FMT_HEADER_ONLY=1)
+# add_library(format INTERFACE)
+# target_include_directories(format INTERFACE ext/fmt/include)
+# target_compile_definitions(format INTERFACE FMT_HEADER_ONLY=1)
 
 # argparsing library, only used in main program not the library
 add_library(args INTERFACE)
@@ -84,10 +84,10 @@ endif (ADDR_TRACE)
 
 target_include_directories(dramsim3 INTERFACE src)
 target_compile_options(dramsim3 PRIVATE -Wall)
-target_link_libraries(dramsim3 PRIVATE inih format)
+target_link_libraries(dramsim3 PRIVATE inih)
 set_target_properties(dramsim3 PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}
-    CXX_STANDARD 11
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
@@ -97,7 +97,7 @@ add_executable(dramsim3main src/main.cc src/cpu.cc)
 target_link_libraries(dramsim3main PRIVATE dramsim3 args)
 target_compile_options(dramsim3main PRIVATE)
 set_target_properties(dramsim3main PROPERTIES
-    CXX_STANDARD 11
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
@@ -119,7 +119,7 @@ add_executable(pimdramsim3main src/main_pim.cc src/transaction_generator.cc)
 target_link_libraries(pimdramsim3main PRIVATE dramsim3 args)
 target_compile_options(pimdramsim3main PRIVATE)
 set_target_properties(pimdramsim3main PROPERTIES
-    CXX_STANDARD 11
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
@@ -129,7 +129,7 @@ add_executable(cpudramsim3main src/main_cpu.cc src/transaction_generator.cc)
 target_link_libraries(cpudramsim3main PRIVATE dramsim3 args)
 target_compile_options(cpudramsim3main PRIVATE)
 set_target_properties(cpudramsim3main PROPERTIES
-    CXX_STANDARD 11
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )

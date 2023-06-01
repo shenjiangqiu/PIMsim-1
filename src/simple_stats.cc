@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "fmt/format.h"
+// #include "fmt/format.h"
 #include "simple_stats.h"
-
+#include <format>
 namespace dramsim3 {
 
 template <class T>
@@ -10,7 +10,7 @@ void PrintStatText(std::ostream& where, std::string name, T value,
                    std::string description) {
     // not making this a class method because we need to calculate
     // power & bw later, which are not BaseStat members
-    where << fmt::format("{:<30}{:^3}{:>12}{:>5}{}", name, " = ", value, " # ",
+    where << std::format("{:<30}{:^3}{:>12}{:>5}{}", name, " = ", value, " # ",
                          description)
           << std::endl;
     return;
@@ -212,17 +212,17 @@ void SimpleStats::InitHistoStat(std::string name, std::string description,
 
     // initialize headers, descriptions
     std::vector<std::string> headers;
-    auto header = fmt::format("{}[-{}]", name, start_val);
+    auto header = std::format("{}[-{}]", name, start_val);
     headers.push_back(header);
     header_descs_.emplace(header, description);
     for (int i = 1; i < num_bins + 1; i++) {
         int bucket_start = start_val + (i - 1) * bin_width;
         int bucket_end = start_val + i * bin_width - 1;
-        header = fmt::format("{}[{}-{}]", name, bucket_start, bucket_end);
+        header = std::format("{}[{}-{}]", name, bucket_start, bucket_end);
         headers.push_back(header);
         header_descs_.emplace(header, description);
     }
-    header = fmt::format("{}[{}-]", name, end_val);
+    header = std::format("{}[{}-]", name, end_val);
     headers.push_back(header);
     header_descs_.emplace(header, description);
 
@@ -249,7 +249,7 @@ void SimpleStats::UpdateHistoBins() {
         const auto& name = name_bins.first;
         auto& bins = name_bins.second;
         std::fill(bins.begin(), bins.end(), 0);
-        for (const auto it : epoch_histo_counts_[name]) {
+        for (const auto &it : epoch_histo_counts_[name]) {
             int value = it.first;
             uint64_t count = it.second;
             int bin_idx = 0;
@@ -340,7 +340,7 @@ void SimpleStats::UpdatePrints(bool epoch) {
     }
 
     for (const auto& it : doubles_) {
-        print_pairs_.emplace_back(it.first, fmt::format("{}", it.second));
+        print_pairs_.emplace_back(it.first, std::format("{}", it.second));
         j_data_[it.first] = it.second;
     }
 
@@ -348,13 +348,13 @@ void SimpleStats::UpdatePrints(bool epoch) {
         Json j_list;
         for (size_t i = 0; i < it.second.size(); i++) {
             std::string name = it.first + "." + std::to_string(i);
-            print_pairs_.emplace_back(name, fmt::format("{}", it.second[i]));
+            print_pairs_.emplace_back(name, std::format("{}", it.second[i]));
             j_list[std::to_string(i)] = it.second[i];
         }
         j_data_[it.first] = j_list;
     }
     for (const auto& it : calculated_) {
-        print_pairs_.emplace_back(it.first, fmt::format("{}", it.second));
+        print_pairs_.emplace_back(it.first, std::format("{}", it.second));
         j_data_[it.first] = it.second;
     }
 }

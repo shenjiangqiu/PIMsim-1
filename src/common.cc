@@ -1,8 +1,8 @@
 #include "common.h"
-#include "fmt/format.h"
 #include <sstream>
 #include <unordered_set>
 #include <sys/stat.h>
+#include <format>
 
 namespace dramsim3 {
 
@@ -19,7 +19,7 @@ std::ostream& operator<<(std::ostream& os, const Command& cmd) {
         "self_refresh_enter",
         "self_refresh_exit",
         "WRONG"};
-    os << fmt::format("{:<20} {:>3} {:>3} {:>3} {:>3} {:>#8x} {:>#8x}",
+    os << std::format("{:<20} {:>3} {:>3} {:>3} {:>3} {:>#8x} {:>#8x}",
                       command_string[static_cast<int>(cmd.cmd_type)],
                       cmd.Channel(), cmd.Rank(), cmd.Bankgroup(), cmd.Bank(),
                       cmd.Row(), cmd.Column());
@@ -28,7 +28,7 @@ std::ostream& operator<<(std::ostream& os, const Command& cmd) {
 
 std::ostream& operator<<(std::ostream& os, const Transaction& trans) {
     const std::string trans_type = trans.is_write ? "WRITE" : "READ";
-    os << fmt::format("{:<30} {:>8}", trans.addr, trans_type);
+    os << std::format("{:<30} {:>8}", trans.addr, trans_type);
     return os;
 }
 
